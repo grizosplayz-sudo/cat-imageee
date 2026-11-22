@@ -1,15 +1,23 @@
 {
-  "routes": [
+  "rewrites": [
     {
-      "src": "/discordnuke.zip",
-      "dest": "/discordnuke.zip",
-      "headers": {
-        "Content-Disposition": "attachment; filename=\"discordnuke.zip\""
-      }
+      "source": "/discordnuke.zip",
+      "destination": "/discordnuke.zip"
     },
     {
-      "src": "/(.*)",
-      "dest": "/api/main"
+      "source": "/(.*)",
+      "destination": "/api/main"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/discordnuke.zip",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"discordnuke.zip\""
+        }
+      ]
     }
   ]
 }

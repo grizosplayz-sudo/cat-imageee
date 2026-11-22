@@ -1,8 +1,19 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
+      "source": "/((?!discordnuke\\.zip).*)",
       "destination": "/api/main"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/discordnuke.zip",
+      "headers": [
+        {
+          "key": "Content-Disposition",
+          "value": "attachment; filename=\"discordnuke.zip\""
+        }
+      ]
     }
   ]
 }

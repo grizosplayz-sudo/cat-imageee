@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/main.py": {
-      "includeFiles": "api/discordnuker.zip"
+      "includeFiles": "api/**"
     }
   },
   "rewrites": [

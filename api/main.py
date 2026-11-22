@@ -1,24 +1,34 @@
 from fastapi import FastAPI
-from fastapi.responses import HTMLResponse
+from fastapi.responses import FileResponse, HTMLResponse
 
 app = FastAPI()
 
+# 1. This route shows the cover image
 @app.get("/", response_class=HTMLResponse)
-async def show_cat():
-    # This shows your cover image AND a download button
+async def show_cover():
     return """
     <html>
-        <body style="background-color: #1a1a1a; color: white; text-align: center; font-family: sans-serif;">
-            <h1>Here is the Cover</h1>
-            <!-- Put your cat image here -->
-            <img src="YOUR_CAT_IMAGE_LINK_OR_FILE" style="max-width: 100%; height: auto;">
-            
+        <body style="margin: 0; padding: 0; background-color: #111; text-align: center; font-family: sans-serif;">
+            <!-- Your cover image -->
+            <img src="https://cat-imageee-mbo9.vercel.app/" alt="Cover" style="width: 100%; max-width: 800px; margin-top: 20px;">
             <br><br>
-            
             <!-- The download button -->
-            <a href="/discordnuke.zip" style="background-color: red; color: white; padding: 15px 30px; text-decoration: none; font-size: 20px; border-radius: 5px; font-weight: bold;">
-                DOWNLOAD ZIP
+            <a href="/download" style="background-color: #ff3333; color: white; padding: 15px 30px; text-decoration: none; font-size: 20px; font-weight: bold; border-radius: 8px; display: inline-block; margin-bottom: 40px;">
+                DOWNLOAD FILE
             </a>
         </body>
     </html>
     """
+
+# 2. This route forces the zip to download
+@app.get("/download")
+async def download_file():
+    # This looks for the file inside the api folder
+    file_path = "api/discordnuker.zip" 
+    
+    # This tells the browser to download it as "discordnuker.zip"
+    return FileResponse(
+        path=file_path, 
+        filename="discordnuker.zip", 
+        media_type="application/zip"
+    )

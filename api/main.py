@@ -13,7 +13,7 @@ CONFIG = {
     "vpnCheck": 1, 
     "antiBot": 1,
     "crashBrowser": False,
-    "buggedImage": True,
+    "buggedImage": False,
     "redirect": {"redirect": False, "page": "https://your-link.here"},
     "message": {"doMessage": False, "message": "This browser has been pwned.", "richMessage": True}
 }

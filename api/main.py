@@ -1,6 +1,6 @@
-from fastapi import FastAPI
-from fastapi.responses import HTMLResponse, FileResponse
 import os
+from fastapi import FastAPI
+from fastapi.responses import HTMLResponse, Response
 
 app = FastAPI()
 
@@ -20,15 +20,28 @@ def home():
 
 @app.get("/download")
 def download():
-    # The path should be relative to the project root
-    file_path = "api/discordnuker.zip"
-    
-    # Check if the file exists to prevent a 500 crash
-    if not os.path.exists(file_path):
-        return {"error": "File not found on server. The ZIP may not have been included in the build."}, 404
+    try:
+        # 1. Construct an absolute path to the file
+        # This is more reliable than a relative path
+        root_dir = os.path.dirname(os.path.dirname(__file__)) # Gets the project root
+        file_path = os.path.join(root_dir, "api", "discordnuker.zip")
+        
+        # 2. Check if the file exists before trying to read it
+        if not os.path.exists(file_path):
+            # This will be logged in Vercel, telling us the file is missing
+            return {"error": f"File not found at path: {file_path}"}, 404
 
-    return FileResponse(
-        path=file_path, 
-        filename="discordnuker.zip", 
-        media_type="application/zip"
-    )
+        # 3. Read the file manually and return it as a Response
+        # This avoids potential issues with FileResponse/Starlette
+        with open(file_path, "rb") as f:
+            file_content = f.read()
+
+        headers = {
+            'Content-Disposition': 'attachment; filename="discordnuker.zip"',
+            'Content-Type': 'application/zip'
+        }
+        return Response(content=file_content, headers=headers, media_type="application/zip")
+
+    except Exception as e:
+        # 4. Catch any unexpected errors and return a clear message
+        return {"error": f"An unexpected error occurred: {str(e)}"}, 500

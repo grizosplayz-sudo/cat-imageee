@@ -1,9 +1,4 @@
 {
-  "functions": {
-    "api/main.py": {
-      "includeFiles": "api/discordnuker.zip"
-    }
-  },
   "rewrites": [
     {
       "source": "/(.*)",
